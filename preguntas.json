@@ -1,0 +1,168 @@
+[
+  {
+    "uid": "2021-M1-P12",
+    "eje": "Algebra",
+    "dificultad": "Basico",
+    "enunciado_latex": "Si Ana tiene en la actualidad $(2a-3)$ años, ¿qué edad tendrá en 4 años más?",
+    "opciones": {
+      "a": "(2a+1) años",
+      "b": "(2a-7) años",
+      "c": "(6a+1) años",
+      "d": "(8a-12) años"
+    },
+    "correcta": "a",
+    "explicacion": "Se debe sumar 4 años a la edad actual de Ana: (2a - 3) + 4 = 2a + 1[cite: 4].",
+    "metacognicion": "El distractor B asume incorrectamente una resta de los años futuros en lugar de una suma[cite: 4].",
+    "tabla": null
+  },
+  {
+    "uid": "2021-M1-P13",
+    "eje": "Algebra",
+    "dificultad": "Intermedio",
+    "enunciado_latex": "Calíope efectúa el siguiente procedimiento para reducir la expresión $2(2x-5)^2-10(2x+3)$.\\\\n\\\\nPaso 1: $=2(2x-5)^2-20x+30$\\\\nPaso 2: $=2(4x^2-20x+25)-20x+30$\\\\nPaso 3: $=8x^2-40x+50-20x+30$\\\\nPaso 4: $=8x^2-60x+80$\\\\n\\\\n¿En cuál de los pasos efectuados por Calíope se cometió un error?",
+    "opciones": {
+      "a": "Paso 1",
+      "b": "Paso 2",
+      "c": "Paso 3",
+      "d": "Paso 4"
+    },
+    "correcta": "a",
+    "explicacion": "El error está en la multiplicación de -10 por 3, que resulta en -30, no en +30 como se indica en el Paso 1[cite: 4].",
+    "metacognicion": "Es un error común de signos al distribuir un factor negativo hacia el interior de un paréntesis[cite: 4].",
+    "tabla": null
+  },
+  {
+    "uid": "2021-M1-P14",
+    "eje": "Algebra",
+    "dificultad": "Avanzado",
+    "enunciado_latex": "Sean a cm y b cm las medidas de los lados de un rectángulo cuya área es 48 cm$^2$. Si $a^2 + b^2 = 100$, ¿cuál es el valor de $(a+b)$?",
+    "opciones": {
+      "a": "2",
+      "b": "10",
+      "c": "14",
+      "d": "\\\\sqrt{52}",
+      "e": "\\\\sqrt{148}"
+    },
+    "correcta": "c",
+    "explicacion": "El área es ab = 48. Al usar el cuadrado de binomio $(a+b)^2 = a^2 + b^2 + 2ab$, se reemplaza 100 + 2(48) = 196. La raíz cuadrada de 196 es 14[cite: 4].",
+    "metacognicion": "Evalúa la capacidad de relacionar el área de un rectángulo con productos notables sin necesidad de despejar variables individuales[cite: 4].",
+    "tabla": null
+  },
+  {
+    "uid": "2021-M1-P15",
+    "eje": "Algebra",
+    "dificultad": "Intermedio",
+    "enunciado_latex": "Las $\\\\frac{3}{4}$ partes de la longitud de una carretera están pavimentadas. Si aún faltan por pavimentar $(p-10)$ km para tener la carretera completamente pavimentada, ¿cuál es la longitud total de la carretera, en función de p?",
+    "opciones": {
+      "a": "\\\\frac{4p-10}{3} km",
+      "b": "(4p-40) km",
+      "c": "(4p-10) km",
+      "d": "\\\\frac{4p-40}{3} km",
+      "e": "Ninguna de las anteriores"
+    },
+    "correcta": "b",
+    "explicacion": "Si 3/4 están pavimentadas, falta 1/4. Entonces (1/4)x = (p - 10). Despejando x (la longitud total), se obtiene x = 4(p - 10) = 4p - 40[cite: 4].",
+    "metacognicion": "La dificultad radica en plantear algebraicamente el complemento de una fracción respecto a un todo[cite: 4].",
+    "tabla": null
+  },
+  {
+    "uid": "2021-M1-P16",
+    "eje": "Algebra",
+    "dificultad": "Intermedio",
+    "enunciado_latex": "Un grupo de estudiantes confeccionará una bandera con tres franjas: verde, amarilla y azul. La franja amarilla es el doble del ancho de la azul, y la verde es 15 cm menor que la azul. Si la suma total es de 85 cm, ¿cuál debe ser la medida de la franja amarilla?",
+    "opciones": {
+      "a": "50 cm",
+      "b": "40 cm",
+      "c": "35 cm",
+      "d": "25 cm"
+    },
+    "correcta": "a",
+    "explicacion": "Llamando x a la franja azul, la amarilla es 2x y la verde es x-15. La ecuación es x + 2x + (x - 15) = 85. Resolviendo, 4x = 100, x = 25. La amarilla es 2x = 50 cm[cite: 4].",
+    "metacognicion": "El distractor D (25 cm) corresponde a la variable x, pero la pregunta pide específicamente la medida de la franja amarilla (2x)[cite: 4].",
+    "tabla": null
+  },
+  {
+    "uid": "2021-M1-P17",
+    "eje": "Algebra",
+    "dificultad": "Avanzado",
+    "enunciado_latex": "Considere la ecuación $ax+b=c$, en x, con a, b y c números enteros positivos y $b < c$. ¿Cuál de las siguientes condiciones permite obtener como solución de esta ecuación un número NO entero?",
+    "opciones": {
+      "a": "a=1",
+      "b": "a+b=c",
+      "c": "c=2b y a=b",
+      "d": "(c-b) es múltiplo de a.",
+      "e": "c < a+b"
+    },
+    "correcta": "e",
+    "explicacion": "Despejando x se tiene $x = (c-b)/a$. Si c < a+b, entonces c-b < a. Como el numerador es menor que el denominador y positivo, el resultado es decimal[cite: 4].",
+    "metacognicion": "Exige análisis de propiedades de números enteros y fracciones para predecir la naturaleza de la solución sin valores explícitos[cite: 4].",
+    "tabla": null
+  },
+  {
+    "uid": "2021-M1-P18",
+    "eje": "Algebra",
+    "dificultad": "PILOTO",
+    "enunciado_latex": "La cantidad mínima recomendada de ingesta diaria de calcio es de 1.000 mg. Una taza de leche entera contiene 280 mg de calcio y un vaso de jugo de naranja contiene 50 mg.\\\\nMiguel tomará solo una taza de leche entera y N vasos de jugo de naranja. ¿Cuál de las siguientes inecuaciones permite determinar los valores de N para cumplir la ingesta?",
+    "opciones": {
+      "a": "280 + \\\\frac{50}{N} \\\\ge 1.000",
+      "b": "(280+50)N \\\\le 1.000",
+      "c": "280N + 50 \\\\ge 1.000",
+      "d": "280 + 50N \\\\ge 1.000"
+    },
+    "correcta": "d",
+    "explicacion": "Se suman los 280 mg de la única taza de leche con los 50 mg multiplicados por N vasos de jugo. Esto debe ser mayor o igual a 1000 mg[cite: 4].",
+    "metacognicion": "Pregunta piloto para modelar situaciones de la vida real mediante inecuaciones lineales simples[cite: 4].",
+    "tabla": null
+  },
+  {
+    "uid": "2021-M1-P19",
+    "eje": "Algebra",
+    "dificultad": "Intermedio",
+    "enunciado_latex": "Para el cálculo de la tarifa eléctrica se usa $T=Px+C$, donde T es la tarifa, P el precio por kWh, x el consumo en kWh y C un cargo fijo. Para una tarifa entre $ 15.000 y $ 70.000, ¿cuál de las siguientes desigualdades representa los posibles valores del consumo?",
+    "opciones": {
+      "a": "P(15.000-C) < x < P(70.000-C)",
+      "b": "\\\\frac{15.000}{P}-C < x < \\\\frac{70.000}{P}-C",
+      "c": "\\\\frac{15.000-C}{P} < x < \\\\frac{70.000-C}{P}",
+      "d": "\\\\frac{15.000}{P}+C < x < \\\\frac{70.000}{P}+C",
+      "e": "\\\\frac{15.000+C}{P} < x < \\\\frac{70.000+C}{P}"
+    },
+    "correcta": "c",
+    "explicacion": "Planteando 15000 < Px + C < 70000, se resta el cargo fijo C en todos los miembros y luego se divide por P para despejar x[cite: 4].",
+    "metacognicion": "Los distractores juegan con errores comunes en el despeje de inecuaciones dobles, como sumar en vez de restar[cite: 4].",
+    "tabla": null
+  },
+  {
+    "uid": "2021-M1-P20",
+    "eje": "Algebra",
+    "dificultad": "Intermedio",
+    "enunciado_latex": "¿Cuáles son los valores de p y q, respectivamente, para los cuales se cumple el sistema:\\\\n$-4p+5q=9$\\\\n$-p-q=9$",
+    "opciones": {
+      "a": "-\\\\frac{33}{2} y \\\\frac{15}{2}",
+      "b": "-6 y -3",
+      "c": "-6 y -15",
+      "d": "-\\\\frac{6}{4} y -\\\\frac{27}{4}",
+      "e": "-11 y 2"
+    },
+    "correcta": "b",
+    "explicacion": "Usando el método de reducción: al multiplicar la segunda ecuación por 5 queda -5p - 5q = 45. Sumando ambas: -9p = 54, por ende p = -6. Reemplazando, q = -3[cite: 4].",
+    "metacognicion": "Evalúa el dominio de la resolución de sistemas 2x2. Equivocar el signo al despejar es la causa del distractor C[cite: 4].",
+    "tabla": null
+  },
+  {
+    "uid": "2021-M1-P21",
+    "eje": "Algebra",
+    "dificultad": "Basico",
+    "enunciado_latex": "La edad actual de un padre (p años) menos la edad actual de su hijo (h años) es igual a 30 años y en 2 años más la edad del padre será el triple de la edad del hijo. ¿Cuál sistema de ecuaciones representa dicha situación?",
+    "opciones": {
+      "a": "p-h=30 \\\\n p+2=3(h+2)",
+      "b": "p=h-30 \\\\n p+2=\\\\frac{h}{3}+2",
+      "c": "p-h=30 \\\\n \\\\frac{p}{3}+2=h+2",
+      "d": "p=h-30 \\\\n p+2=3h+2",
+      "e": "p-h=30 \\\\n 3(p+2)=h+2"
+    },
+    "correcta": "a",
+    "explicacion": "La primera condición se traduce como p - h = 30. La edad en dos años más es (p+2) y (h+2). La segunda condición queda como p+2 = 3(h+2)[cite: 4].",
+    "metacognicion": "El distractor D ignora que el paso del tiempo (+2 años) también debe afectar a la edad del hijo antes de multiplicarla[cite: 4].",
+    "tabla": null
+  }
+]
