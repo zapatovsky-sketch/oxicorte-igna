@@ -1,168 +1,172 @@
 [
   {
-    "uid": "2021-M1-P12",
-    "eje": "Algebra",
-    "dificultad": "Basico",
-    "enunciado_latex": "Si Ana tiene en la actualidad $(2a-3)$ años, ¿qué edad tendrá en 4 años más?",
+    "uid": "PAES-2026-ALG-01",
+    "eje": "Álgebra",
+    "dificultad": "Básico",
+    "enunciado_latex": "¿Cuál es el valor de x en la ecuación $3(x - 5) = 2x + 10$?",
     "opciones": {
-      "a": "(2a+1) años",
-      "b": "(2a-7) años",
-      "c": "(6a+1) años",
-      "d": "(8a-12) años"
-    },
-    "correcta": "a",
-    "explicacion": "Se debe sumar 4 años a la edad actual de Ana: (2a - 3) + 4 = 2a + 1[cite: 4].",
-    "metacognicion": "El distractor B asume incorrectamente una resta de los años futuros en lugar de una suma[cite: 4].",
-    "tabla": null
-  },
-  {
-    "uid": "2021-M1-P13",
-    "eje": "Algebra",
-    "dificultad": "Intermedio",
-    "enunciado_latex": "Calíope efectúa el siguiente procedimiento para reducir la expresión $2(2x-5)^2-10(2x+3)$.\\\\n\\\\nPaso 1: $=2(2x-5)^2-20x+30$\\\\nPaso 2: $=2(4x^2-20x+25)-20x+30$\\\\nPaso 3: $=8x^2-40x+50-20x+30$\\\\nPaso 4: $=8x^2-60x+80$\\\\n\\\\n¿En cuál de los pasos efectuados por Calíope se cometió un error?",
-    "opciones": {
-      "a": "Paso 1",
-      "b": "Paso 2",
-      "c": "Paso 3",
-      "d": "Paso 4"
-    },
-    "correcta": "a",
-    "explicacion": "El error está en la multiplicación de -10 por 3, que resulta en -30, no en +30 como se indica en el Paso 1[cite: 4].",
-    "metacognicion": "Es un error común de signos al distribuir un factor negativo hacia el interior de un paréntesis[cite: 4].",
-    "tabla": null
-  },
-  {
-    "uid": "2021-M1-P14",
-    "eje": "Algebra",
-    "dificultad": "Avanzado",
-    "enunciado_latex": "Sean a cm y b cm las medidas de los lados de un rectángulo cuya área es 48 cm$^2$. Si $a^2 + b^2 = 100$, ¿cuál es el valor de $(a+b)$?",
-    "opciones": {
-      "a": "2",
-      "b": "10",
-      "c": "14",
-      "d": "\\\\sqrt{52}",
-      "e": "\\\\sqrt{148}"
+      "a": "x = 5",
+      "b": "x = 15",
+      "c": "x = 25",
+      "d": "x = 0",
+      "e": "x = -5"
     },
     "correcta": "c",
-    "explicacion": "El área es ab = 48. Al usar el cuadrado de binomio $(a+b)^2 = a^2 + b^2 + 2ab$, se reemplaza 100 + 2(48) = 196. La raíz cuadrada de 196 es 14[cite: 4].",
-    "metacognicion": "Evalúa la capacidad de relacionar el área de un rectángulo con productos notables sin necesidad de despejar variables individuales[cite: 4].",
-    "tabla": null
+    "explicacion": "Al distribuir el 3 queda $3x - 15 = 2x + 10$. Restando 2x y sumando 15 en ambos lados, obtenemos $x = 25$[cite: 4].",
+    "metacognicion": "El error común es no distribuir el 3 al -5, resultando en x=15 o similares[cite: 4].",
+    "grafico_script": null
   },
   {
-    "uid": "2021-M1-P15",
-    "eje": "Algebra",
+    "uid": "PAES-2026-ALG-02",
+    "eje": "Álgebra",
     "dificultad": "Intermedio",
-    "enunciado_latex": "Las $\\\\frac{3}{4}$ partes de la longitud de una carretera están pavimentadas. Si aún faltan por pavimentar $(p-10)$ km para tener la carretera completamente pavimentada, ¿cuál es la longitud total de la carretera, en función de p?",
+    "enunciado_latex": "Si el doble de un número aumentado en 8 es igual a su triple disminuido en 4, ¿cuál es el número?",
     "opciones": {
-      "a": "\\\\frac{4p-10}{3} km",
-      "b": "(4p-40) km",
-      "c": "(4p-10) km",
-      "d": "\\\\frac{4p-40}{3} km",
-      "e": "Ninguna de las anteriores"
+      "a": "4",
+      "b": "12",
+      "c": "6",
+      "d": "10",
+      "e": "8"
     },
     "correcta": "b",
-    "explicacion": "Si 3/4 están pavimentadas, falta 1/4. Entonces (1/4)x = (p - 10). Despejando x (la longitud total), se obtiene x = 4(p - 10) = 4p - 40[cite: 4].",
-    "metacognicion": "La dificultad radica en plantear algebraicamente el complemento de una fracción respecto a un todo[cite: 4].",
-    "tabla": null
+    "explicacion": "Planteando la ecuación: $2x + 8 = 3x - 4$[cite: 4]. Restando 2x y sumando 4, queda $12 = x$[cite: 4].",
+    "metacognicion": "Confundir 'aumentado' con multiplicación o 'doble' con potencia son fallos de traducción lenguaje-algebraico[cite: 4].",
+    "grafico_script": null
   },
   {
-    "uid": "2021-M1-P16",
-    "eje": "Algebra",
+    "uid": "PAES-2026-ALG-03",
+    "eje": "Álgebra",
+    "dificultad": "Básico",
+    "enunciado_latex": "¿Cuál de las siguientes expresiones representa el área de un cuadrado de lado $(x + 3)$ cm?",
+    "opciones": {
+      "a": "$(x^2 + 9)$ cm$^2$",
+      "b": "$(x^2 + 6x + 9)$ cm$^2$",
+      "c": "$(2x + 6)$ cm$^2$",
+      "d": "$(4x + 12)$ cm$^2$",
+      "e": "$(x^2 + 3x + 9)$ cm$^2$"
+    },
+    "correcta": "b",
+    "explicacion": "El área es el cuadrado del lado: $(x+3)^2 = x^2 + 2 * 3 * x + 3^2 = x^2 + 6x + 9$[cite: 4].",
+    "metacognicion": "El distractor A es el error más frecuente: elevar los términos al cuadrado por separado olvidando el término central[cite: 4].",
+    "grafico_script": null
+  },
+  {
+    "uid": "PAES-2026-ALG-04",
+    "eje": "Álgebra",
     "dificultad": "Intermedio",
-    "enunciado_latex": "Un grupo de estudiantes confeccionará una bandera con tres franjas: verde, amarilla y azul. La franja amarilla es el doble del ancho de la azul, y la verde es 15 cm menor que la azul. Si la suma total es de 85 cm, ¿cuál debe ser la medida de la franja amarilla?",
+    "enunciado_latex": "En un sistema de ecuaciones: $x + y = 10$ y $2x - y = 8$, ¿cuál es el valor de x?",
     "opciones": {
-      "a": "50 cm",
-      "b": "40 cm",
-      "c": "35 cm",
-      "d": "25 cm"
-    },
-    "correcta": "a",
-    "explicacion": "Llamando x a la franja azul, la amarilla es 2x y la verde es x-15. La ecuación es x + 2x + (x - 15) = 85. Resolviendo, 4x = 100, x = 25. La amarilla es 2x = 50 cm[cite: 4].",
-    "metacognicion": "El distractor D (25 cm) corresponde a la variable x, pero la pregunta pide específicamente la medida de la franja amarilla (2x)[cite: 4].",
-    "tabla": null
-  },
-  {
-    "uid": "2021-M1-P17",
-    "eje": "Algebra",
-    "dificultad": "Avanzado",
-    "enunciado_latex": "Considere la ecuación $ax+b=c$, en x, con a, b y c números enteros positivos y $b < c$. ¿Cuál de las siguientes condiciones permite obtener como solución de esta ecuación un número NO entero?",
-    "opciones": {
-      "a": "a=1",
-      "b": "a+b=c",
-      "c": "c=2b y a=b",
-      "d": "(c-b) es múltiplo de a.",
-      "e": "c < a+b"
-    },
-    "correcta": "e",
-    "explicacion": "Despejando x se tiene $x = (c-b)/a$. Si c < a+b, entonces c-b < a. Como el numerador es menor que el denominador y positivo, el resultado es decimal[cite: 4].",
-    "metacognicion": "Exige análisis de propiedades de números enteros y fracciones para predecir la naturaleza de la solución sin valores explícitos[cite: 4].",
-    "tabla": null
-  },
-  {
-    "uid": "2021-M1-P18",
-    "eje": "Algebra",
-    "dificultad": "PILOTO",
-    "enunciado_latex": "La cantidad mínima recomendada de ingesta diaria de calcio es de 1.000 mg. Una taza de leche entera contiene 280 mg de calcio y un vaso de jugo de naranja contiene 50 mg.\\\\nMiguel tomará solo una taza de leche entera y N vasos de jugo de naranja. ¿Cuál de las siguientes inecuaciones permite determinar los valores de N para cumplir la ingesta?",
-    "opciones": {
-      "a": "280 + \\\\frac{50}{N} \\\\ge 1.000",
-      "b": "(280+50)N \\\\le 1.000",
-      "c": "280N + 50 \\\\ge 1.000",
-      "d": "280 + 50N \\\\ge 1.000"
-    },
-    "correcta": "d",
-    "explicacion": "Se suman los 280 mg de la única taza de leche con los 50 mg multiplicados por N vasos de jugo. Esto debe ser mayor o igual a 1000 mg[cite: 4].",
-    "metacognicion": "Pregunta piloto para modelar situaciones de la vida real mediante inecuaciones lineales simples[cite: 4].",
-    "tabla": null
-  },
-  {
-    "uid": "2021-M1-P19",
-    "eje": "Algebra",
-    "dificultad": "Intermedio",
-    "enunciado_latex": "Para el cálculo de la tarifa eléctrica se usa $T=Px+C$, donde T es la tarifa, P el precio por kWh, x el consumo en kWh y C un cargo fijo. Para una tarifa entre $ 15.000 y $ 70.000, ¿cuál de las siguientes desigualdades representa los posibles valores del consumo?",
-    "opciones": {
-      "a": "P(15.000-C) < x < P(70.000-C)",
-      "b": "\\\\frac{15.000}{P}-C < x < \\\\frac{70.000}{P}-C",
-      "c": "\\\\frac{15.000-C}{P} < x < \\\\frac{70.000-C}{P}",
-      "d": "\\\\frac{15.000}{P}+C < x < \\\\frac{70.000}{P}+C",
-      "e": "\\\\frac{15.000+C}{P} < x < \\\\frac{70.000+C}{P}"
+      "a": "x = 2",
+      "b": "x = 4",
+      "c": "x = 6",
+      "d": "x = 8",
+      "e": "x = 5"
     },
     "correcta": "c",
-    "explicacion": "Planteando 15000 < Px + C < 70000, se resta el cargo fijo C en todos los miembros y luego se divide por P para despejar x[cite: 4].",
-    "metacognicion": "Los distractores juegan con errores comunes en el despeje de inecuaciones dobles, como sumar en vez de restar[cite: 4].",
-    "tabla": null
+    "explicacion": "Usando el método de reducción sumamos ambas ecuaciones: $(x+y) + (2x-y) = 10 + 8$, lo que da $3x = 18$, por lo tanto $x = 6$[cite: 4].",
+    "metacognicion": "Permite practicar la eliminación directa cuando los coeficientes de una variable son opuestos[cite: 4].",
+    "grafico_script": "import matplotlib.pyplot as plt\nimport numpy as np\nx = np.linspace(0, 10, 100)\ny1 = 10 - x\ny2 = 2*x - 8\nfig, ax = plt.subplots()\nax.plot(x, y1, label='x + y = 10', color='cyan')\nax.plot(x, y2, label='2x - y = 8', color='magenta')\nax.scatter(6, 4, color='white', zorder=5)\nax.set_facecolor('#1E1E1E')\nfig.patch.set_facecolor('#1E1E1E')\nax.tick_params(colors='white')\nax.legend()\nst.pyplot(fig)"
   },
   {
-    "uid": "2021-M1-P20",
-    "eje": "Algebra",
-    "dificultad": "Intermedio",
-    "enunciado_latex": "¿Cuáles son los valores de p y q, respectivamente, para los cuales se cumple el sistema:\\\\n$-4p+5q=9$\\\\n$-p-q=9$",
+    "uid": "PAES-2026-ALG-05",
+    "eje": "Álgebra",
+    "dificultad": "Avanzado",
+    "enunciado_latex": "Dada la función $f(x) = x^2 - 4x + 3$, ¿en qué puntos corta la parábola al eje X?",
     "opciones": {
-      "a": "-\\\\frac{33}{2} y \\\\frac{15}{2}",
-      "b": "-6 y -3",
-      "c": "-6 y -15",
-      "d": "-\\\\frac{6}{4} y -\\\\frac{27}{4}",
-      "e": "-11 y 2"
-    },
-    "correcta": "b",
-    "explicacion": "Usando el método de reducción: al multiplicar la segunda ecuación por 5 queda -5p - 5q = 45. Sumando ambas: -9p = 54, por ende p = -6. Reemplazando, q = -3[cite: 4].",
-    "metacognicion": "Evalúa el dominio de la resolución de sistemas 2x2. Equivocar el signo al despejar es la causa del distractor C[cite: 4].",
-    "tabla": null
-  },
-  {
-    "uid": "2021-M1-P21",
-    "eje": "Algebra",
-    "dificultad": "Basico",
-    "enunciado_latex": "La edad actual de un padre (p años) menos la edad actual de su hijo (h años) es igual a 30 años y en 2 años más la edad del padre será el triple de la edad del hijo. ¿Cuál sistema de ecuaciones representa dicha situación?",
-    "opciones": {
-      "a": "p-h=30 \\\\n p+2=3(h+2)",
-      "b": "p=h-30 \\\\n p+2=\\\\frac{h}{3}+2",
-      "c": "p-h=30 \\\\n \\\\frac{p}{3}+2=h+2",
-      "d": "p=h-30 \\\\n p+2=3h+2",
-      "e": "p-h=30 \\\\n 3(p+2)=h+2"
+      "a": "(1, 0) y (3, 0)",
+      "b": "(-1, 0) y (-3, 0)",
+      "c": "(0, 1) y (0, 3)",
+      "d": "(2, -1) y (0, 0)",
+      "e": "(4, 0) y (0, 0)"
     },
     "correcta": "a",
-    "explicacion": "La primera condición se traduce como p - h = 30. La edad en dos años más es (p+2) y (h+2). La segunda condición queda como p+2 = 3(h+2)[cite: 4].",
-    "metacognicion": "El distractor D ignora que el paso del tiempo (+2 años) también debe afectar a la edad del hijo antes de multiplicarla[cite: 4].",
-    "tabla": null
+    "explicacion": "Factorizando el trinomio: $(x - 1)(x - 3) = 0$[cite: 4]. Las raíces son $x = 1$ y $x = 3$[cite: 4].",
+    "metacognicion": "Evalúa si el estudiante confunde las raíces (intersección eje X) con la intersección con el eje Y (punto C)[cite: 4].",
+    "grafico_script": "import matplotlib.pyplot as plt\nimport numpy as np\nx = np.linspace(0, 4, 100)\ny = x**2 - 4*x + 3\nfig, ax = plt.subplots()\nax.plot(x, y, color='#FF4B2B')\nax.axhline(0, color='white', linewidth=0.5)\nax.scatter([1, 3], [0, 0], color='cyan')\nax.set_facecolor('#1E1E1E')\nfig.patch.set_facecolor('#1E1E1E')\nax.tick_params(colors='white')\nst.pyplot(fig)"
+  },
+  {
+    "uid": "PAES-2026-ALG-06",
+    "eje": "Álgebra",
+    "dificultad": "Intermedio",
+    "enunciado_latex": "¿Cuál es la solución de la inecuación $2x - 5 > 7$?",
+    "opciones": {
+      "a": "x > 1",
+      "b": "x < 6",
+      "c": "x > 6",
+      "d": "x > 12",
+      "e": "x < 12"
+    },
+    "correcta": "c",
+    "explicacion": "Sumamos 5 en ambos lados: $2x > 12$[cite: 4]. Dividimos por 2: $x > 6$[cite: 4].",
+    "metacognicion": "Refuerza la importancia de mantener la orientación de la desigualdad al dividir por un número positivo[cite: 4].",
+    "grafico_script": null
+  },
+  {
+    "uid": "PAES-2026-ALG-07",
+    "eje": "Álgebra",
+    "dificultad": "Básico",
+    "enunciado_latex": "Si $f(x) = 5x - 2$, ¿cuál es el valor de $f(-3)$?",
+    "opciones": {
+      "a": "13",
+      "b": "-17",
+      "c": "-13",
+      "d": "17",
+      "e": "-15"
+    },
+    "correcta": "b",
+    "explicacion": "Reemplazamos x por -3: $f(-3) = 5(-3) - 2 = -15 - 2 = -17$[cite: 4].",
+    "metacognicion": "El error de signos en la multiplicación de un positivo por un negativo es el distractor principal[cite: 4].",
+    "grafico_script": null
+  },
+  {
+    "uid": "PAES-2026-ALG-08",
+    "eje": "Álgebra",
+    "dificultad": "Avanzado",
+    "enunciado_latex": "¿Cuál es el valor de la pendiente en la recta que pasa por los puntos (2, 5) y (4, 9)?",
+    "opciones": {
+      "a": "m = 1",
+      "b": "m = 4",
+      "c": "m = 2",
+      "d": "m = 1/2",
+      "e": "m = -2"
+    },
+    "correcta": "c",
+    "explicacion": "Usando la fórmula de pendiente $m = (y_2 - y_1) / (x_2 - x_1) = (9 - 5) / (4 - 2) = 4 / 2 = 2$[cite: 4].",
+    "metacognicion": "Evalúa la capacidad de aplicar la fórmula de razón de cambio entre dos puntos[cite: 4].",
+    "grafico_script": null
+  },
+  {
+    "uid": "PAES-2026-ALG-09",
+    "eje": "Álgebra",
+    "dificultad": "Intermedio",
+    "enunciado_latex": "Si $3^{x+1} = 27$, ¿cuál es el valor de x?",
+    "opciones": {
+      "a": "x = 1",
+      "b": "x = 2",
+      "c": "x = 3",
+      "d": "x = 4",
+      "e": "x = 0"
+    },
+    "correcta": "b",
+    "explicacion": "Expresamos 27 como potencia de 3: $3^3$[cite: 4]. Entonces $x + 1 = 3$, lo que implica $x = 2$[cite: 4].",
+    "metacognicion": "Mezcla de conceptos de álgebra con propiedades de potencias de igual base[cite: 4].",
+    "grafico_script": null
+  },
+  {
+    "uid": "PAES-2026-ALG-10",
+    "eje": "Álgebra",
+    "dificultad": "Intermedio",
+    "enunciado_latex": "La suma de tres números consecutivos es 72. ¿Cuál es el número menor?",
+    "opciones": {
+      "a": "23",
+      "b": "24",
+      "c": "25",
+      "d": "22",
+      "e": "21"
+    },
+    "correcta": "a",
+    "explicacion": "Ecuación: $x + (x+1) + (x+2) = 72$[cite: 4]. $3x + 3 = 72 \\rightarrow 3x = 69 \\rightarrow x = 23$[cite: 4].",
+    "metacognicion": "El distractor B (24) es el promedio o el número central, error común por lectura rápida[cite: 4].",
+    "grafico_script": null
   }
 ]
