@@ -3,6 +3,7 @@ import json
 import time
 import unicodedata
 import re
+import matplotlib.pyplot as plt
 from fpdf import FPDF
 
 # 1. Identidad y Estética Industrial
@@ -17,189 +18,147 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 2. Gestión de Estados
+# 2. Gestión de Estados y Persistencia
 if 'fase' not in st.session_state: st.session_state.fase = "CONFIG"
 if 'respuestas_ignacia' not in st.session_state: st.session_state.respuestas_ignacia = {}
 if 'preguntas_seleccionadas' not in st.session_state: st.session_state.preguntas_seleccionadas = []
+if 'progreso' not in st.session_state: st.session_state.progreso = {}
 
-# 3. Ducto de Suministro JSON
+# 3. Ductos de Datos (JSON y Progreso)
 def cargar_inventario():
     try:
         with open("preguntas.json", "r", encoding="utf-8") as f:
             return json.load(f)
-    except Exception as e:
-        st.error(f"Error en el suministro: {e}")
-        return []
+    except: return []
 
-# 4. Protocolo de Traducción Humanizada Definitiva (Fuerza Bruta Regex)
+def cargar_progreso():
+    try:
+        with open("progreso_igna.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+    except: return {}
+
+def registrar_evento(uid, correcta, respuesta_dada):
+    # Actualización en tiempo real del progreso
+    progreso = cargar_progreso()
+    if uid not in progreso:
+        progreso[uid] = {"vistas": 0, "aciertos": 0, "fallos": 0, "ultimo_intento": ""}
+    
+    progreso[uid]["vistas"] += 1
+    if correcta.lower() == respuesta_dada.lower():
+        progreso[uid]["aciertos"] += 1
+    else:
+        progreso[uid]["fallos"] += 1
+    
+    progreso[uid]["ultimo_intento"] = respuesta_dada
+    
+    with open("progreso_igna.json", "w", encoding="utf-8") as f:
+        json.dump(progreso, f, indent=2)
+
+# 4. Motor de Traducción Humanizada
 def limpiar_para_pdf(texto):
     if not texto: return ""
     texto = str(texto)
-    
-    # FASE 1: Purga Agresiva de Delimitadores y Basura de Espaciado
-    texto = re.sub(r'\\?\$', '', texto) # Aniquila dólares ($ y \$)
-    texto = texto.replace("~", " ")     # Aniquila virgulillas
-    texto = texto.replace("\\n", "\n")
-    
-    # FASE 2: Traducción Natural de Potencias y Raíces
-    texto = re.sub(r'(\^)?\{\\?wedge\}', '^', texto) # Caza ^{\wedge} y variantes
-    texto = texto.replace("^{\\wedge}", "^").replace("^{\wedge}", "^")
-    texto = texto.replace("\\wedge", "^")
-    texto = texto.replace("^{*}", "*")
-    
+    texto = re.sub(r'\\?\$', '', texto)
+    texto = texto.replace("~", " ").replace("\\n", "\n")
+    texto = re.sub(r'(\^)?\{\\?wedge\}', '^', texto)
     texto = re.sub(r'\\sqrt\[([^\[\]]+)\]\{([^{}]+)\}', r'raíz_\1(\2)', texto)
     texto = re.sub(r'\\sqrt\{([^{}]+)\}', r'raíz(\1)', texto)
-    texto = texto.replace("\\sqrt", "raíz").replace("root", "raíz").replace("raiz", "raíz")
-    
-    # FASE 3: Lógica Inteligente de Fracciones
-    for _ in range(3):
-        texto = re.sub(r'\\frac\{([^{}]+)\}\{([^{}]+)\}', r'(\1)/(\2)', texto)
-    texto = texto.replace("\\frac", "")
-    
-    # Libera paréntesis si el contenido es un número (incluso con puntos) o una variable simple
+    for _ in range(3): texto = re.sub(r'\\frac\{([^{}]+)\}\{([^{}]+)\}', r'(\1)/(\2)', texto)
     texto = re.sub(r'\(([A-Za-z0-9\.]+)\)/', r'\1/', texto)
     texto = re.sub(r'/\(([A-Za-z0-9\.]+)\)', r'/\1', texto)
+    texto = re.sub(r'\^\{([A-Za-z0-9\+\-\*\/\.]+)\}', r'^\1', texto).replace("\\", "")
     
-    # FASE 4: Exponentes y Subíndices limpios
-    texto = re.sub(r'\^\{([A-Za-z0-9\+\-\*\/\.]+)\}', r'^\1', texto)
-    texto = re.sub(r'\_\{([A-Za-z0-9\+\-\*\/\.]+)\}', r'_\1', texto)
-    texto = re.sub(r'log\_\s*\\?\_?\(([^()]+)\)', r'log_(\1)', texto)
-    
-    # FASE 5: Homologación de Signos PAES
-    reemplazos_math = {
-        "\\cdot": " * ", "\\times": " x ", "\\pi": "pi",
-        "\\le": " <= ", "\\ge": " >= ", "\\neq": " != ", "\\approx": " aprox ",
-        "\\log_": "log_", "\\log": "log", "\\{": "{", "\\}": "}"
-    }
-    for k, v in reemplazos_math.items():
-        texto = texto.replace(k, v)
-        
-    texto = texto.replace("{", "(").replace("}", ")")
-    texto = texto.replace("\\", "")
-    
-    # FASE 6: INYECCIÓN DE ORTOGRAFÍA PAES
-    ortografia = {
-        "Numeros": "Números", "Basico": "Básico", "Cual(es)": "Cuál(es)",
-        "¿Cual": "¿Cuál", "numero": "número", "erroneamente": "erróneamente",
-        "Cuantos": "Cuántos", "¿Cuantos": "¿Cuántos", "Geometria": "Geometría",
-        "Algebra": "Álgebra", "Intermedio": "Intermedio", "Avanzado": "Avanzado"
-    }
-    for k, v in ortografia.items():
-        texto = re.sub(rf'\b{k}\b', v, texto)
-        
-    texto = re.sub(r' +', ' ', texto) # Limpia espacios dobles accidentales
-    
-    # Codificación de alta fidelidad
+    ortografia = {"Numeros": "Números", "Basico": "Básico", "Cual(es)": "Cuál(es)", "Algebra": "Álgebra"}
+    for k, v in ortografia.items(): texto = re.sub(rf'\b{k}\b', v, texto)
     return texto.encode('latin-1', 'replace').decode('latin-1').strip()
 
-# 5. Prensa PDF (Diseño Pedagógico)
+# 5. Prensa PDF y Gráficos
 def generar_pdf_blindado(preguntas):
-    try:
-        pdf = FPDF()
-        pdf.set_auto_page_break(auto=True, margin=20)
-        pdf.add_page()
-        pdf.set_font("Helvetica", "B", 16)
-        pdf.cell(180, 10, "GUIA DE TRABAJO - EL OXICORTE DE I:G:N:A", ln=1, align='C')
-        pdf.ln(10)
-        
-        margin_x, safe_width = 15, 175
-        for p in preguntas:
-            pdf.set_x(margin_x)
-            pdf.set_font("Helvetica", "B", 11)
-            pdf.set_text_color(50, 50, 50)
-            pdf.multi_cell(safe_width, 8, limpiar_para_pdf(f"Pieza: {p['uid']} | Eje: {p['eje']} | Nivel: {p['dificultad']}"))
-            
-            pdf.set_x(margin_x)
-            pdf.set_font("Helvetica", "", 11)
-            pdf.set_text_color(0, 0, 0)
-            pdf.multi_cell(safe_width, 7, f"{limpiar_para_pdf(p['enunciado_latex'])}")
-            pdf.ln(3)
-            
-            alts = p['opciones']
-            pdf.set_font("Helvetica", "I", 10)
-            for k, v in alts.items():
-                pdf.set_x(margin_x + 5)
-                pdf.multi_cell(safe_width - 5, 6, f"{k.upper()}) {limpiar_para_pdf(v)}")
-            
-            pdf.ln(6); pdf.set_x(margin_x); pdf.cell(safe_width, 0, "", "T"); pdf.ln(6)
-            
-        return bytes(pdf.output())
-    except Exception as e:
-        return bytes(f"Error en prensa: {str(e)}", 'utf-8')
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Helvetica", "B", 16)
+    pdf.cell(180, 10, "EL OXICORTE DE I:G:N:A", ln=1, align='C')
+    pdf.ln(10)
+    for p in preguntas:
+        pdf.set_font("Helvetica", "B", 11)
+        pdf.multi_cell(175, 8, limpiar_para_pdf(f"Pieza: {p['uid']} | {p['eje']}"))
+        pdf.set_font("Helvetica", "", 11)
+        pdf.multi_cell(175, 7, f"{limpiar_para_pdf(p['enunciado_latex'])}")
+        alts = p['opciones']
+        pdf.set_font("Helvetica", "I", 10)
+        for k, v in alts.items():
+            pdf.multi_cell(170, 6, f"{k.upper()}) {limpiar_para_pdf(v)}")
+        pdf.ln(6); pdf.cell(175, 0, "", "T"); pdf.ln(6)
+    return bytes(pdf.output())
 
 # --- FLUJO DE OPERACIÓN ---
 inventario = cargar_inventario()
 
 if st.session_state.fase == "CONFIG":
-    st.title("⚙️ El Oxicorte de I:G:N:A | Configuración")
+    st.title("⚙️ El Oxicorte de I:G:N:A")
+    st.subheader("Configuración de Jornada")
+    
+    modo_m2 = st.toggle("🚀 Activar Modo M2 (Nivel Avanzado)", value=False)
+    tipo_filtro = "M2" if modo_m2 else "M1"
     
     if inventario:
         ejes = sorted(list(set([p['eje'] for p in inventario])))
-        dificultades = sorted(list(set([p['dificultad'] for p in inventario])))
+        eje_sel = st.selectbox("Eje Temático:", ["Todos"] + ejes)
         
-        c1, c2 = st.columns(2)
-        eje_sel = c1.selectbox("Eje Temático:", ["Todos"] + ejes)
-        dif_sel = c2.selectbox("Nivel de Dificultad:", ["Todos"] + dificultades)
-        
-        filtrado = [p for p in inventario if 
-                    (eje_sel == "Todos" or p['eje'] == eje_sel) and 
-                    (dif_sel == "Todos" or p['dificultad'] == dif_sel)]
+        # Filtro de Memoria: Excluir preguntas dominadas (opcional)
+        filtrado = [p for p in inventario if (eje_sel == "Todos" or p['eje'] == eje_sel)]
+        # Aquí podrías añadir: and p.get('tipo', 'M1') == tipo_filtro
         
         if filtrado:
-            if len(filtrado) > 1:
-                cant = st.slider("Piezas a procesar:", 1, len(filtrado), min(len(filtrado), 5))
-            else:
-                st.info("Solo hay 1 pieza disponible con este calibre.")
-                cant = 1
-                
+            cant = st.slider("Piezas a procesar:", 1, len(filtrado), min(len(filtrado), 5))
             if st.button("🚀 COMENZAR OXICORTE"):
                 st.session_state.preguntas_seleccionadas = filtrado[:cant]
                 st.session_state.start_time = time.time()
                 st.session_state.fase = "DESPACHO"
                 st.rerun()
-        else:
-            st.warning("No hay material con esos filtros. Ajusta el soplete.")
-    else:
-        st.warning("No hay material cargado en 'preguntas.json'.")
 
 elif st.session_state.fase == "DESPACHO":
-    st.title("📦 El Oxicorte de I:G:N:A | Despacho Offline")
+    st.title("📦 El Oxicorte de I:G:N:A | Despacho")
     pdf_bytes = generar_pdf_blindado(st.session_state.preguntas_seleccionadas)
     st.download_button("📥 Descargar Guía PDF", data=pdf_bytes, file_name="oxicorte_igna.pdf")
     if st.button("✅ IR A VERIFICACIÓN"):
-        st.session_state.fase = "VERIFICACION"
-        st.rerun()
+        st.session_state.fase = "VERIFICACION"; st.rerun()
 
 elif st.session_state.fase == "VERIFICACION":
-    st.title("📝 El Oxicorte de I:G:N:A | Grilla de Respuestas")
+    st.title("📝 El Oxicorte de I:G:N:A | Verificación")
+    
     for i, p in enumerate(st.session_state.preguntas_seleccionadas):
-        opciones_teclas = [k.upper() for k in p['opciones'].keys()]
-        st.session_state.respuestas_ignacia[i] = st.segmented_control(
-            f"Pieza {p['uid']}", opciones_teclas, key=f"ans_{i}"
-        )
-    if st.button("🔥 REVELAR RESULTADOS"):
+        st.write(f"### Pieza {p['uid']}")
+        if "grafico_script" in p and p["grafico_script"]:
+            try: exec(p["grafico_script"]) # Ejecución segura de Matplotlib
+            except: st.warning("Error al renderizar gráfico dinámico.")
+            
+        opciones = [k.upper() for k in p['opciones'].keys()]
+        
+        # GUARDADO ATÓMICO: Al marcar, se registra
+        ans = st.segmented_control(f"Selecciona tu respuesta para {p['uid']}:", opciones, key=f"ans_{i}")
+        
+        if ans and (i not in st.session_state.respuestas_ignacia or st.session_state.respuestas_ignacia[i] != ans):
+            st.session_state.respuestas_ignacia[i] = ans
+            registrar_evento(p['uid'], p['correcta'], ans)
+            st.toast(f"Progreso guardado para {p['uid']} ✅")
+
+    if st.button("🔥 FINALIZAR SESIÓN"):
         st.session_state.end_time = time.time()
-        st.session_state.fase = "METACOGNICION"
-        st.rerun()
+        st.session_state.fase = "METACOGNICION"; st.rerun()
 
 elif st.session_state.fase == "METACOGNICION":
-    st.title("🔍 El Oxicorte de I:G:N:A | Autopsia del Error")
+    st.title("🔍 El Oxicorte de I:G:N:A | Autopsia")
     aciertos = 0
     for i, p in enumerate(st.session_state.preguntas_seleccionadas):
-        resp = st.session_state.respuestas_ignacia.get(i, "")
-        resp = resp.lower() if resp else ""
+        resp = st.session_state.respuestas_ignacia.get(i, "").lower()
         correcta = p['correcta'].lower()
-        
         with st.expander(f"Pieza {p['uid']}: {'✅' if resp == correcta else '❌'}"):
-            st.write(f"**Tu respuesta:** {resp.upper() if resp else 'N/A'} | **Correcta:** {correcta.upper()}")
-            st.info(f"**Análisis Oficial:** {p['explicacion']}")
+            st.write(f"**Tu respuesta:** {resp.upper()} | **Correcta:** {correcta.upper()}")
+            st.info(f"**Análisis:** {p['explicacion']}")
             st.warning(f"**Metacognición:** {p['metacognicion']}")
             if resp == correcta: aciertos += 1
     
-    t_total = (st.session_state.end_time - st.session_state.start_time) / 60
     st.metric("PRECISIÓN", f"{(aciertos/len(st.session_state.preguntas_seleccionadas))*100:.1f}%")
-    st.metric("TIEMPO TOTAL", f"{t_total:.1f} min")
-    
     if st.button("🔄 NUEVA JORNADA"):
-        st.session_state.clear()
-        st.rerun()
+        st.session_state.clear(); st.rerun()

@@ -1,2 +1,6 @@
 streamlit
 fpdf2
+matplotlib
+numpy
+pandas
+scikit-learn
