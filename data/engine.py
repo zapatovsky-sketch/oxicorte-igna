@@ -3,36 +3,15 @@ from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 
 def load_questions():
-    """
-    Establece conexión con la Google Sheet privada usando la Service Account
-    configurada en los Secrets.
-    """
     try:
-        # Inicializa la conexión. Streamlit busca automáticamente 
-        # las credenciales bajo [connections.gsheets] en los secrets.
         conn = st.connection("gsheets", type=GSheetsConnection)
-        
-        # Intentamos leer la pestaña 'secretom'
-        # ttl=0 asegura que durante el desarrollo veas los cambios al instante
-        df = conn.read(
-            spreadsheet=st.secrets["connections"]["gsheets"]["spreadsheet"],
-            worksheet="secretom",
-            ttl=0,
-                )
-        
-        if df is None or df.empty:
-            st.error("La conexión tuvo éxito pero la hoja 'secretom' parece estar vacía.")
-            return pd.DataFrame()
-
-        # LIMPIEZA TÉCNICA:
-        # 1. Quitamos espacios en los nombres de las columnas
-        df.columns = df.columns.str.strip()
-        # 2. Eliminamos filas que no tengan ID o Enunciado
-        df = df.dropna(subset=['id', 'enunciado'])
-        # 3. Aseguramos que el ID sea tratado como string o int limpio
-        df['id'] = df['id'].astype(str)
-
+        # Esto nos dirá qué hojas ve la cuenta de servicio
+        # Puedes imprimirlo en pantalla con st.write(conn.client.open_by_url(...).worksheets())
+        df = conn.read(spreadsheet=st.secrets["connections"]["gsheets"]["spreadsheet"])
         return df
+    except Exception as e:
+        st.error(f"Error: {e}")
+        return pd.DataFrame()
 
     except Exception as e:
         # Si hay un error 400 o de permisos, se capturará aquí
