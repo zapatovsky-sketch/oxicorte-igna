@@ -3,3 +3,4 @@ st-gsheets-connection  # Para la integración con Google Sheets
 fpdf2                  # Para el motor de prensa PDF sin colapsos
 matplotlib             # Para los gráficos dinámicos
 pandas                 # Para el manejo de tablas de datos
+numpy
