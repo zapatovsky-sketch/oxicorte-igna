@@ -5,18 +5,29 @@ import pandas as pd
 def load_questions():
     try:
         conn = st.connection("gsheets", type=GSheetsConnection)
-        # Esto nos dirá qué hojas ve la cuenta de servicio
-        # Puedes imprimirlo en pantalla con st.write(conn.client.open_by_url(...).worksheets())
-        df = conn.read(spreadsheet=st.secrets["connections"]["gsheets"]["spreadsheet"])
+        df = conn.read(
+            spreadsheet=st.secrets["connections"]["gsheets"]["spreadsheet"],
+            worksheet="secretom",
+            ttl=0
+        )
+        
+        # 1. Limpieza de nombres de columnas (por si hay espacios invisibles)
+        df.columns = [str(c).strip().lower() for c in df.columns]
+        
+        # 2. Diagnóstico temporal: ¿Qué está viendo pandas realmente?
+        # st.write("Raw data shape:", df.shape) 
+        
+        # 3. Filtro optimizado: Solo eliminamos si TODA la fila está vacía
+        df = df.dropna(how='all')
+        
+        # 4. Asegurar que el ID sea string
+        if 'id' in df.columns:
+            df['id'] = df['id'].astype(str)
+            
         return df
-    except Exception as e:
-        st.error(f"Error: {e}")
-        return pd.DataFrame()
 
     except Exception as e:
-        # Si hay un error 400 o de permisos, se capturará aquí
-        st.error("🛑 Error Crítico en el Santuario Digital")
-        st.info(f"Detalle técnico: {e}")
+        st.error(f"Error en el Santuario: {e}")
         return pd.DataFrame()
 
 def get_random_question(df, excludes=[]):
