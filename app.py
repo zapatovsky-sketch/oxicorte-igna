@@ -8,7 +8,16 @@ from modules.pdf_factory import create_exam_pdf
 # 1. Configuración de página y Estética Industrial
 st.set_page_config(page_title="EL OXICORTE | PAES M1", layout="wide", initial_sidebar_state="expanded")
 apply_industrial_theme()
-st.write(st.secrets["connections"]["gsheets"]["spreadsheet"])
+# ... después de apply_industrial_theme()
+df_questions = load_questions()
+
+# DIAGNÓSTICO DE EMERGENCIA
+with st.expander("🛠️ TELEMETRÍA DEL SANTUARIO (DEBUG)"):
+    st.write("¿DataFrame es None?:", df_questions is None)
+    if df_questions is not None:
+        st.write("Columnas encontradas:", df_questions.columns.tolist())
+        st.write("Dimensiones:", df_questions.shape)
+        st.write("Primeras 2 filas raw:", df_questions.head(2))
 
 def main():
     # 2. Encabezado del Santuario Digital
