@@ -18,8 +18,7 @@ def load_questions():
             spreadsheet=st.secrets["connections"]["gsheets"]["spreadsheet"],
             worksheet="secretom",
             ttl=0,
-            usecols=['id', 'enunciado', 'alt_a', 'alt_b', 'alt_c', 'alt_d', 'alt_e', 'correcta']
-        )
+                )
         
         if df is None or df.empty:
             st.error("La conexión tuvo éxito pero la hoja 'secretom' parece estar vacía.")
