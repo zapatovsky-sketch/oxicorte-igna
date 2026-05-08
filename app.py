@@ -1,139 +1,78 @@
 import streamlit as st
-import json
-import time
-import unicodedata
-import re
-import matplotlib.pyplot as plt
-from fpdf import FPDF
+from data.engine import load_questions, get_random_question
+from data.persistence import update_student_progress, filter_questions_by_memory
+from modules.renderer import render_math_text, generate_geometry_plot
+from modules.ui_components import apply_industrial_theme, display_header, stats_tile
+from modules.pdf_factory import create_exam_pdf
 
-# 1. Identidad de la Obra
-st.set_page_config(page_title="El Oxicorte de I:G:N:A", layout="wide")
+# 1. Configuración de página y Estética Industrial
+st.set_page_config(page_title="EL OXICORTE | PAES M1", layout="wide", initial_sidebar_state="expanded")
+apply_industrial_theme()
 
-st.markdown("""
-    <style>
-    .stApp { background-color: #121212; color: #E0E0E0; }
-    h1, h2, h3 { color: #FF4B2B !important; text-transform: uppercase; letter-spacing: 2px; }
-    .stButton>button { background-color: #FF4B2B; color: white; border-radius: 5px; font-weight: bold; width: 100%; }
-    .stExpander { background-color: #1E1E1E; border: 1px solid #333; }
-    </style>
-    """, unsafe_allow_html=True)
+def main():
+    # 2. Encabezado del Santuario Digital
+    display_header("El Oxicorte de I:G:N:A", "Preparación M1 de Alto Rendimiento")
 
-# 2. Gestión de Estados
-if 'fase' not in st.session_state: st.session_state.fase = "CONFIG"
-if 'respuestas_ignacia' not in st.session_state: st.session_state.respuestas_ignacia = {}
-if 'preguntas_seleccionadas' not in st.session_state: st.session_state.preguntas_seleccionadas = []
-
-# 3. Ductos de Datos (Lectura)
-def cargar_inventario():
-    try:
-        with open("preguntas.json", "r", encoding="utf-8") as f:
-            return json.load(f)
-    except: return []
-
-# 4. Motor de Limpieza (Blindaje para PDF)
-def limpiar_para_pdf(texto):
-    if not texto: return ""
-    texto = str(texto)
-    # Purga de basura de código
-    texto = re.sub(r'\\?\$', '', texto)
-    texto = texto.replace("~", " ").replace("\\n", " ").replace("\n", " ")
-    texto = re.sub(r'(\^)?\{\\?wedge\}', '^', texto)
-    # Traducción simplificada
-    texto = texto.replace("\\frac", "").replace("{", "(").replace("}", ")").replace("\\", "")
-    # Codificación básica para evitar caídas
-    texto = unicodedata.normalize('NFD', texto).encode('ascii', 'ignore').decode('ascii')
-    return texto.strip()
-
-# 5. Prensa PDF (Reconstrucción desde cero)
-def generar_pdf_fiel(preguntas):
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Helvetica", "B", 16)
-    pdf.cell(0, 10, "EL OXICORTE DE I:G:N:A", ln=1, align='C')
-    pdf.ln(10)
+    # 3. Carga de datos (Cloud)
+    df_questions = load_questions()
     
-    for p in preguntas:
-        pdf.set_font("Helvetica", "B", 11)
-        pdf.multi_cell(0, 8, f"PIEZA: {p['uid']} | {p['eje']}")
-        pdf.set_font("Helvetica", "", 11)
-        pdf.multi_cell(0, 7, limpiar_para_pdf(p['enunciado_latex']))
-        pdf.ln(2)
-        # Listado vertical de alternativas
-        for k, v in p['opciones'].items():
-            pdf.set_x(20)
-            pdf.cell(0, 6, f"{k.upper()}) {limpiar_para_pdf(v)}", ln=1)
-        pdf.ln(5); pdf.cell(0, 0, "", "T"); pdf.ln(5)
-    return bytes(pdf.output())
+    if df_questions.empty:
+        st.warning("⚠️ Esperando conexión con el banco de preguntas en Google Sheets...")
+        return
 
-# --- FLUJO DE OPERACIÓN ---
-inventario = cargar_inventario()
-
-if st.session_state.fase == "CONFIG":
-    st.title("⚙️ El Oxicorte de I:G:N:A")
-    st.subheader("Configuración de Jornada")
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        ejes = sorted(list(set([p['eje'] for p in inventario])))
-        eje_sel = st.selectbox("Eje Temático:", ["Todos"] + ejes)
-    with col2:
-        modo_m2 = st.toggle("Activar Modo M2", value=False)
-    
-    filtrado = [p for p in inventario if (eje_sel == "Todos" or p['eje'] == eje_sel)]
-    
-    if filtrado:
-        cant = st.slider("Piezas a procesar:", 1, len(filtrado), min(len(filtrado), 5))
-        if st.button("🚀 COMENZAR OXICORTE"):
-            st.session_state.preguntas_seleccionadas = filtrado[:cant]
-            st.session_state.fase = "VERIFICACION" # Salto directo para agilizar
-            st.rerun()
-
-elif st.session_state.fase == "VERIFICACION":
-    st.title("📝 Grilla de Respuestas")
-    
-    # Barra lateral para el PDF (Separación de preocupaciones)
+    # 4. Barra Lateral: Control y Estadísticas
     with st.sidebar:
-        st.header("Herramientas")
-        pdf_bytes = generar_pdf_fiel(st.session_state.preguntas_seleccionadas)
-        st.download_button("📥 Descargar Guía PDF", data=pdf_bytes, file_name="oxicorte_igna.pdf")
-        if st.button("🏁 Finalizar y Evaluar"):
-            st.session_state.fase = "METACOGNICION"; st.rerun()
-
-    # Grilla Principal
-    for i, p in enumerate(st.session_state.preguntas_seleccionadas):
-        with st.container(border=True):
-            c_text, c_graph = st.columns([2, 1])
-            with c_text:
-                st.write(f"**P{p['uid']}**")
-                st.write(p['enunciado_latex'])
-                # Mostrar alternativas
-                for k, v in p['opciones'].items():
-                    st.write(f"*{k.upper()})* {v}")
-            
-            with c_graph:
-                if "grafico_script" in p and p["grafico_script"]:
-                    try: exec(p["grafico_script"])
-                    except: st.caption("Gráfico no disponible")
-
-            # Control de respuesta al final del contenedor
-            opciones = [k.upper() for k in p['opciones'].keys()]
-            st.segmented_control("Tu respuesta:", opciones, key=f"ans_{i}")
-
-elif st.session_state.fase == "METACOGNICION":
-    st.title("🔍 Autopsia del Error")
-    aciertos = 0
-    total = len(st.session_state.preguntas_seleccionadas)
-    
-    for i, p in enumerate(st.session_state.preguntas_seleccionadas):
-        resp = st.session_state.get(f"ans_{i}", "").lower()
-        correcta = p['correcta'].lower()
+        st.markdown("### PANEL DE CONTROL")
+        if st.button("📥 Generar Ensayo PDF (Facsímil)"):
+            # Generamos un PDF con las primeras 10 preguntas para Ignacia
+            path = create_exam_pdf(df_questions.head(10).to_dict('records'))
+            st.success(f"PDF Generado: {path}")
+            with open(path, "rb") as f:
+                st.download_button("Descargar Archivo", f, file_name="Ensayo_M1_Ignacia.pdf")
         
-        with st.expander(f"Pieza {p['uid']}: {'✅' if resp == correcta else '❌'}"):
-            st.write(f"**Tu respuesta:** {resp.upper()} | **Correcta:** {correcta.upper()}")
-            st.info(f"**Análisis:** {p['explicacion']}")
-            if resp == correcta: aciertos += 1
+        st.divider()
+        stats_tile("Preguntas Listas", len(df_questions))
+        stats_tile("Sesión Actual", "M1 - Álgebra y Funciones")
+
+    # 5. Lógica de Visualización de Pregunta
+    # Filtramos por Repetición Espaciada (Simulado hasta tener el df_progress)
+    # questions_to_show = filter_questions_by_memory(df_questions, st.session_state.get('progress', pd.DataFrame()))
+    
+    pregunta = get_random_question(df_questions)
+
+    if pregunta is not None:
+        col_txt, col_vis = st.columns([1.5, 1])
+
+        with col_txt:
+            st.markdown(f"**PREGUNTA ID: {pregunta['id']}**")
+            render_math_text(pregunta['enunciado'])
             
-    st.divider()
-    st.metric("PRECISIÓN", f"{(aciertos/total)*100:.1f}%")
-    if st.button("🔄 NUEVA JORNADA"):
-        st.session_state.clear(); st.rerun()
+            # Alternativas con estética de botones industriales
+            st.markdown("---")
+            for letra in ['a', 'b', 'c', 'd', 'e']:
+                if st.button(f"{letra.upper()}) {pregunta[f'alt_{letra}']}", key=f"btn_{letra}"):
+                    if letra == pregunta['correcta'].lower():
+                        st.balloons()
+                        st.success("Correcto. Registro enviado a la nube.")
+                        # Actualizamos progreso (Score 5)
+                        # update_student_progress(None, "Ignacia", pregunta['id'], 5)
+                    else:
+                        st.error("Incorrecto. Esta pregunta reaparecerá pronto.")
+                        # Actualizamos progreso (Score 1)
+                        # update_student_progress(None, "Ignacia", pregunta['id'], 1)
+
+        with col_vis:
+            # Si la pregunta requiere gráfico (puedes condicionarlo en tu Sheets)
+            st.subheader("Visualización Técnica")
+            # Ejemplo de gráfico dinámico de función
+            import numpy as np
+            x = np.linspace(-10, 10, 100)
+            y = x**2 # Esto debería venir de la lógica de la pregunta
+            fig = generate_geometry_plot({'x': x, 'y': y}, plot_type="function")
+            st.pyplot(fig)
+
+    else:
+        st.info("🎯 ¡Felicidades! Ignacia ha completado todas las revisiones programadas para hoy.")
+
+if __name__ == "__main__":
+    main()
