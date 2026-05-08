@@ -20,6 +20,8 @@ def load_questions():
     except Exception as e:
         st.error(f"Error en el Santuario: {e}")
         return pd.DataFrame()
+        st.info("Revisa si el nombre de la pestaña en 'worksheet' coincide con Google Sheets.")
+        return pd.DataFrame()
     except Exception as e:
         st.error(f"Error de conexión al Santuario Digital: {e}")
         return pd.DataFrame()
