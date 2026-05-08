@@ -4,28 +4,17 @@ import pandas as pd
 
 def load_questions():
     try:
+        # La librería buscará automáticamente 'service_account' en los secrets
         conn = st.connection("gsheets", type=GSheetsConnection)
-        
-        # Ajustamos el nombre de la worksheet a 'Hoja 1' que es el estándar de Google
         df = conn.read(
             spreadsheet=st.secrets["connections"]["gsheets"]["spreadsheet"],
-            worksheet="secretom", # Si en tu Google Sheets le cambiaste el nombre a 'secretom', cámbialo aquí
-            ttl=600
+            worksheet="secretom", 
+            ttl=0  # TTL 0 para pruebas iniciales y ver cambios en tiempo real
         )
-        
-        # Limpieza de nombres de columnas (quita espacios en blanco)
-        df.columns = df.columns.str.strip()
-        
         return df
     except Exception as e:
-        st.error(f"Error en el Santuario: {e}")
+        st.error(f"Error de acceso privado: {e}")
         return pd.DataFrame()
-        st.info("Revisa si el nombre de la pestaña en 'worksheet' coincide con Google Sheets.")
-        return pd.DataFrame()
-    except Exception as e:
-        st.error(f"Error de conexión al Santuario Digital: {e}")
-        return pd.DataFrame()
-
 def get_random_question(df, excludes=[]):
     """
     Selecciona una pregunta aleatoria que no esté en la lista de excluidas
