@@ -8,6 +8,7 @@ from modules.pdf_factory import create_exam_pdf
 # 1. Configuración de página y Estética Industrial
 st.set_page_config(page_title="EL OXICORTE | PAES M1", layout="wide", initial_sidebar_state="expanded")
 apply_industrial_theme()
+st.write(st.secrets["connections"]["gsheets"]["spreadsheet"])
 
 def main():
     # 2. Encabezado del Santuario Digital
