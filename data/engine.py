@@ -17,7 +17,8 @@ def load_questions():
         df = conn.read(
             spreadsheet=st.secrets["connections"]["gsheets"]["spreadsheet"],
             worksheet="secretom",
-            ttl=0
+            ttl=0,
+            usecols=['id', 'enunciado', 'alt_a', 'alt_b', 'alt_c', 'alt_d', 'alt_e', 'correcta']
         )
         
         if df is None or df.empty:
