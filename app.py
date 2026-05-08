@@ -1,88 +1,86 @@
 import streamlit as st
+import pandas as pd
 from data.engine import load_questions, get_random_question
-from data.persistence import update_student_progress, filter_questions_by_memory
+from data.persistence import update_student_progress
 from modules.renderer import render_math_text, generate_geometry_plot
 from modules.ui_components import apply_industrial_theme, display_header, stats_tile
 from modules.pdf_factory import create_exam_pdf
 
-# 1. Configuración de página y Estética Industrial
-st.set_page_config(page_title="EL OXICORTE | PAES M1", layout="wide", initial_sidebar_state="expanded")
+# 1. Configuración de cabecera y Estética
+st.set_page_config(
+    page_title="EL OXICORTE | I:G:N:A", 
+    layout="wide", 
+    initial_sidebar_state="expanded"
+)
 apply_industrial_theme()
-# ... después de apply_industrial_theme()
-df_questions = load_questions()
-
-# DIAGNÓSTICO DE EMERGENCIA
-with st.expander("🛠️ TELEMETRÍA DEL SANTUARIO (DEBUG)"):
-    st.write("¿DataFrame es None?:", df_questions is None)
-    if df_questions is not None:
-        st.write("Columnas encontradas:", df_questions.columns.tolist())
-        st.write("Dimensiones:", df_questions.shape)
-        st.write("Primeras 2 filas raw:", df_questions.head(2))
 
 def main():
-    # 2. Encabezado del Santuario Digital
-    display_header("El Oxicorte de I:G:N:A", "Preparación M1 de Alto Rendimiento")
+    # 2. Encabezado e Identidad
+    display_header("El Oxicorte de I:G:N:A", "Fase 2.0: Operación Cimiento")
 
-    # 3. Carga de datos (Cloud)
+    # 3. Carga de datos desde Google Sheets (Privado)
     df_questions = load_questions()
     
     if df_questions.empty:
-        st.warning("⚠️ Esperando conexión con el banco de preguntas en Google Sheets...")
+        st.warning("⚠️ El Santuario está esperando la carga de datos... (Revisa la pestaña 'secretom')")
         return
 
-    # 4. Barra Lateral: Control y Estadísticas
+    # 4. Barra Lateral de Control
     with st.sidebar:
         st.markdown("### PANEL DE CONTROL")
-        if st.button("📥 Generar Ensayo PDF (Facsímil)"):
-            # Generamos un PDF con las primeras 10 preguntas para Ignacia
-            path = create_exam_pdf(df_questions.head(10).to_dict('records'))
-            st.success(f"PDF Generado: {path}")
+        if st.button("📥 Generar Facsímil PDF"):
+            # Genera PDF con las preguntas cargadas
+            path = create_exam_pdf(df_questions.to_dict('records'))
             with open(path, "rb") as f:
-                st.download_button("Descargar Archivo", f, file_name="Ensayo_M1_Ignacia.pdf")
+                st.download_button("Descargar PDF", f, file_name="Ensayo_M1.pdf")
         
         st.divider()
-        stats_tile("Preguntas Listas", len(df_questions))
-        stats_tile("Sesión Actual", "M1 - Álgebra y Funciones")
+        stats_tile("Preguntas en Base", len(df_questions))
+        st.markdown("---")
+        st.caption("Arqueniería Digital v2.0")
 
-    # 5. Lógica de Visualización de Pregunta
-    # Filtramos por Repetición Espaciada (Simulado hasta tener el df_progress)
-    # questions_to_show = filter_questions_by_memory(df_questions, st.session_state.get('progress', pd.DataFrame()))
-    
-    pregunta = get_random_question(df_questions)
+    # 5. Lógica de Navegación de Preguntas
+    # Usamos session_state para mantener la pregunta actual al responder
+    if 'current_q' not in st.session_state:
+        st.session_state.current_q = get_random_question(df_questions)
+
+    pregunta = st.session_state.current_q
 
     if pregunta is not None:
-        col_txt, col_vis = st.columns([1.5, 1])
+        col_main, col_visual = st.columns([1.5, 1])
 
-        with col_txt:
-            st.markdown(f"**PREGUNTA ID: {pregunta['id']}**")
+        with col_main:
+            st.markdown(f"**ID: {pregunta['id']}**")
+            # Renderizado de enunciado con soporte LaTeX
             render_math_text(pregunta['enunciado'])
             
-            # Alternativas con estética de botones industriales
             st.markdown("---")
+            
+            # Grilla de alternativas
             for letra in ['a', 'b', 'c', 'd', 'e']:
-                if st.button(f"{letra.upper()}) {pregunta[f'alt_{letra}']}", key=f"btn_{letra}"):
-                    if letra == pregunta['correcta'].lower():
-                        st.balloons()
-                        st.success("Correcto. Registro enviado a la nube.")
-                        # Actualizamos progreso (Score 5)
+                label = f"{letra.upper()}) {pregunta[f'alt_{letra}']}"
+                if st.button(label, key=f"btn_{letra}", use_container_width=True):
+                    if letra.lower() == str(pregunta['correcta']).lower():
+                        st.success("✅ CORRECTO | Registro enviado a la nube.")
+                        # Registrar progreso en 'secretoms'
                         # update_student_progress(None, "Ignacia", pregunta['id'], 5)
+                        if st.button("Siguiente Pregunta ➡️"):
+                            st.session_state.current_q = get_random_question(df_questions)
+                            st.rerun()
                     else:
-                        st.error("Incorrecto. Esta pregunta reaparecerá pronto.")
-                        # Actualizamos progreso (Score 1)
+                        st.error("❌ INCORRECTO | Reaparecerá en la próxima sesión.")
+                        # Registrar progreso (Score bajo para repetición rápida)
                         # update_student_progress(None, "Ignacia", pregunta['id'], 1)
 
-        with col_vis:
-            # Si la pregunta requiere gráfico (puedes condicionarlo en tu Sheets)
-            st.subheader("Visualización Técnica")
-            # Ejemplo de gráfico dinámico de función
-            import numpy as np
-            x = np.linspace(-10, 10, 100)
-            y = x**2 # Esto debería venir de la lógica de la pregunta
-            fig = generate_geometry_plot({'x': x, 'y': y}, plot_type="function")
-            st.pyplot(fig)
+        with col_visual:
+            st.subheader("Análisis Visual")
+            # Aquí podrías cargar un gráfico si la pregunta tiene coordenadas
+            # Por ahora, un placeholder estético o gráfico de función genérico
+            st.info("Visualización técnica activa para análisis de funciones.")
+            # Ejemplo: generate_geometry_plot(...)
 
     else:
-        st.info("🎯 ¡Felicidades! Ignacia ha completado todas las revisiones programadas para hoy.")
+        st.info("🎯 Sesión completada. No hay más preguntas pendientes por ahora.")
 
 if __name__ == "__main__":
     main()
